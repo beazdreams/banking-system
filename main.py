@@ -46,7 +46,7 @@ def convert_str_to_float(value: str) -> float:
             return value
 
         except ValueError as ve:
-            raise ValueError(err_msg) from ve
+            raise TypeError(err_msg) from ve
 
     except TypeError as te:
         raise ValueError(err_msg) from te
