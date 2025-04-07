@@ -78,7 +78,7 @@ def withdraw_from_account(balance: str, current_withdrawal_number: int,
     if below_max_daily_withdrawals and value_is_500_or_more and saldo_bigger_than_value:
         balance -= value
         current_withdrawal_number += 1
-        print('O saque foi realizado com sucesso!')
+        print(f'O saque de R$ {value:.2f} foi realizado com sucesso!')
         statement = add_to_statement('withdrawal', value, balance, statement)
         return balance, current_withdrawal_number, statement
 
@@ -111,7 +111,7 @@ def deposit_to_account(balance: str, value: float, statement: list) -> tuple:
 
     if above_eq_zero:
         balance += value
-        print('O depósito foi realizado com sucesso!')
+        print(f'O depósito de R$ {value:.2f} foi realizado com sucesso!')
         changed_statement = add_to_statement('deposit', value, balance, statement)
 
     else:
@@ -177,8 +177,8 @@ def print_statement(statement: list):
     if len(statement) > 0:
         formatted_statement = [
             f'Operação: {prettify_names.get(ext.get("operation_type", {}), "N/A")}, '
-            f'Valor da operação: {ext.get("value", 0)}, '
-            f'Saldo após a operação: {ext.get("saldo_after_operation", 0)}'
+            f'Valor da operação: R$ {ext.get("value", 0):.2f}, '
+            f'Saldo após a operação: R$ {ext.get("saldo_after_operation", 0):.2f}'
             for ext in statement
         ]
         print('\n'.join(formatted_statement))
