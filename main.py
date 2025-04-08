@@ -51,7 +51,7 @@ def convert_str_to_float(value: str) -> float:
     except TypeError as te:
         raise ValueError(err_msg) from te
 
-def withdraw_from_account(balance: str, current_withdrawal_number: int,
+def withdraw_money(balance: str, current_withdrawal_number: int,
                    value: float, statement: list) -> tuple:
     """
     Withdraws money from the user's account.
@@ -94,7 +94,7 @@ def withdraw_from_account(balance: str, current_withdrawal_number: int,
 
     return balance, current_withdrawal_number, statement
 
-def deposit_to_account(balance: str, value: float, statement: list) -> tuple:
+def deposit_money(balance: str, value: float, statement: list) -> tuple:
     """
     Deposits money to the user's own account.
 
@@ -207,7 +207,7 @@ def main():
                     if isinstance(deposit_value, int):
                         deposit_value = float(deposit_value)
 
-                    acc_balance, acc_statement = deposit_to_account(acc_balance,
+                    acc_balance, acc_statement = deposit_money(acc_balance,
                                                                deposit_value,
                                                                acc_statement)
 
@@ -220,7 +220,7 @@ def main():
                     if isinstance(withdrawal_value, int):
                         withdrawal_value = float(withdrawal_value)
 
-                    acc_balance, acc_daily_withdrawals, acc_statement = withdraw_from_account(
+                    acc_balance, acc_daily_withdrawals, acc_statement = withdraw_money(
                         acc_balance,
                         acc_daily_withdrawals,
                         withdrawal_value,
