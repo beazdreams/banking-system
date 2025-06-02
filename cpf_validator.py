@@ -6,6 +6,35 @@ be used to register an user and/or bank account.
 @date: 2025-04-13
 """
 
+import re
+
+def input_integrity_check(user_cpf: str) -> str:
+    """
+    Allows the user to input their CPF and validates it to ensure
+    data quality.
+    """
+    if re.match(r'\d{3}.\d{3}.\d{3}-\d{2}', user_cpf):
+        user_cpf = user_cpf.replace('.', '').replace('-', '')
+        is_digit = user_cpf.isdigit()
+        is_eleven_digits_long = len(user_cpf) == 11
+
+        if is_digit and is_eleven_digits_long:
+            is_valid = main(user_cpf)
+            if is_valid:
+                return user_cpf
+
+        if not is_digit:
+            raise ValueError('o CPF fornecido possui caracteres inválidos.')
+
+        if not is_eleven_digits_long:
+            raise ValueError('o CPF fornecido possui mais do que 11 caracteres.')
+
+        raise ValueError("CPF inválido. O CPF inserido não passou nos "
+                        "critérios de avaliação necessários.")
+
+    raise ValueError("CPF inválido. Deve preencher o campo de CPF"
+                        " com a numeração XXX.XXX.XXX-XX")
+
 def multiply_from_arr(int_arr: list[int]):
     """
     Multiplies each integer in the given list by a decreasing sequence of numbers 
