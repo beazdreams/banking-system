@@ -7,6 +7,7 @@ made for DIO's Python Developer Bootcamp challenge.
 """
 
 from banking_methods import deposit_money, withdraw_money, print_statement, convert_str_to_float
+from users import main as create_user
 
 # Pre-made template start
 
@@ -14,6 +15,7 @@ MENU = """
 
 [d] Depositar
 [s] Sacar
+[u] Cadastrar usuário
 [x] Extrato
 [e] Sair
 
@@ -28,6 +30,7 @@ def main():
     acc_balance = 0 # equivalent to 'saldo'
     acc_daily_withdrawals = 0 # equivalent to 'saques diários'
     acc_statement = [] # equivalent to 'extrato'
+    user_database = []
 
     while True:
         options = input(MENU)
@@ -62,6 +65,10 @@ def main():
                         withdrawal_value,
                         acc_statement
                     )
+
+                case 'u':
+                    print('Cadastrar usuário')
+                    user_database = create_user(user_database)
 
                 case 'x':
                     print('Extrato')
