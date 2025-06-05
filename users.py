@@ -146,6 +146,7 @@ def main(user_arr: list):
                     }
                 )
 
+                print("Usuário cadastrado com sucesso!")
                 return user_arr
 
         except Exception as e:
