@@ -5,40 +5,8 @@ This module contains the methods related to user CRUD
 @date: 2025-04-13
 """
 
-import re
 import datetime
-from cpf_validator import input_integrity_check as verify_cpf
-
-def input_cpf() -> str:
-    """
-    Allows the user to input their CPF and validates it to ensure
-    data quality.
-    """
-    while True:
-        user_cpf = input("Insira o CPF do usuário que deseja cadastrar: ")
-
-        if re.match(r'\d{3}.\d{3}.\d{3}-\d{2}', user_cpf):
-            user_cpf = user_cpf.replace('.', '').replace('-', '')
-            is_digit = user_cpf.isdigit()
-            is_eleven_digits_long = len(user_cpf) == 11
-
-            if is_digit and is_eleven_digits_long:
-                is_valid = verify_cpf(user_cpf)
-                if is_valid:
-                    return user_cpf
-
-            if not is_digit:
-                raise ValueError('o CPF fornecido possui caracteres inválidos.')
-
-            if not is_eleven_digits_long:
-                raise ValueError('o CPF fornecido possui mais do que 11 caracteres.')
-
-            raise ValueError("CPF inválido. O CPF inserido não passou nos "
-                            "critérios de avaliação necessários.")
-
-        raise ValueError("CPF inválido. Deve preencher o campo de CPF"
-                         " com a numeração XXX.XXX.XXX-XX")
-
+from cpf_validator import main as verify_cpf
 
 def validate_uf(user_uf: str) -> bool:
     """
@@ -115,7 +83,6 @@ def main(user_arr: list):
             is_valid = verify_cpf(user_cpf)
 
             if is_valid:
-                print('Valid CPF!')
                 find_user = [user for user in user_arr if user.get('cpf', None) == user_cpf]
 
                 if len(find_user) > 0:
