@@ -8,7 +8,7 @@ be used to register an user and/or bank account.
 
 import re
 
-def input_integrity_check(user_cpf: str) -> str:
+def main(user_cpf: str) -> bool:
     """
     Allows the user to input their CPF and validates it to ensure
     data quality.
@@ -19,9 +19,7 @@ def input_integrity_check(user_cpf: str) -> str:
         is_eleven_digits_long = len(user_cpf) == 11
 
         if is_digit and is_eleven_digits_long:
-            is_valid = main(user_cpf)
-            if is_valid:
-                return user_cpf
+            return verify_last_digits(user_cpf)
 
         if not is_digit:
             raise ValueError('o CPF fornecido possui caracteres inválidos.')
@@ -88,9 +86,14 @@ def generate_verification_digit(total_multiply: int):
     verify_value = 11 - mod_eleven
     return verify_value
 
-def main(cpf: str) -> bool:
-    """Verifies if a CPF is valid, and returns `True` if so.
-    
+def verify_last_digits(cpf: str) -> bool:
+    """
+    By verifying the last digits from a CPF numeric string,
+    the method fetches the last two digits and verifies if they comply
+    to the verification rules set by the Brazilian Government.
+
+    If the CPF is Valid, the returned value will be `True`; else, `False`
+
     Params:
     @cpf: the evaluated CPF, without punctuation
     """
