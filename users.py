@@ -122,3 +122,19 @@ def main(user_arr: list):
 
         except Exception as e:
             print(e)
+
+def print_user_list(user_database: list):
+    """
+    Prints the user's data on the terminal with adequate formatting
+    """
+
+    if len(user_database) > 0:
+        formatted_user_database = [
+            f'Nome: {ext.get("name", "Sem nome")}, '
+            f'CPF: {ext.get("cpf", "Sem CPF")}, '
+            f'Endereço: {ext.get("full_address", "Sem endereço")}'
+            for ext in user_database
+        ]
+        print('\n'.join(formatted_user_database))
+    else:
+        print('Nenhum usuário cadastrado até o momento')

@@ -7,7 +7,7 @@ made for DIO's Python Developer Bootcamp challenge.
 """
 
 from banking_methods import deposit_money, withdraw_money, print_statement, convert_str_to_float
-from users import main as create_user
+from users import main as create_user, print_user_list
 from account import register_account
 
 # Pre-made template start
@@ -19,6 +19,7 @@ MENU = """
 [c] Cadastrar conta corrente
 [u] Cadastrar usuário
 [x] Extrato
+[lu] Listar usuários cadastrados
 [e] Sair
 
 => """
@@ -82,6 +83,10 @@ def main():
                 case 'x':
                     print('Extrato')
                     print_statement(acc_statement)
+
+                case 'lu':
+                    print('Lista de usuários')
+                    print_user_list(user_database)
 
                 case 'e':
                     print('Agradecemos a preferência!')
