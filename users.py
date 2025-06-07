@@ -109,7 +109,10 @@ def main(user_arr: list):
                         'address': user_address,
                         'neighbourhood': user_neighbourhood,
                         'city': user_city,
-                        'state_uf': user_uf
+                        'state_uf': user_uf,
+                        'full_address': (f'{user_address} - {user_house_number}'
+                                         f' - {user_neighbourhood} - '
+                                         f'{user_city}/{user_uf}')
                     }
                 )
 
