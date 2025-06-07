@@ -57,6 +57,14 @@ def register_state_uf() -> str:
         except ValueError as e:
             print(f'ValueError: {e}')
 
+def find_user_in_database(user_arr: list, user_cpf: str):
+    """
+    Finds the user's data in the user list database
+    """
+
+    found_user = [user for user in user_arr if user.get('cpf', None) == user_cpf]
+
+    return found_user if found_user else []
 
 def main(user_arr: list):
     """
@@ -84,7 +92,7 @@ def main(user_arr: list):
 
             if is_valid:
                 user_cpf = format_cpf(user_cpf)
-                find_user = [user for user in user_arr if user.get('cpf', None) == user_cpf]
+                find_user = find_user_in_database(user_arr, user_cpf)
 
                 if len(find_user) > 0:
                     # if a list is returned, then, user exists:
