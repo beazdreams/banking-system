@@ -11,7 +11,7 @@ An account contains:
 """
 
 from typing import Any
-from cpf_validator import main as verify_cpf, remove_punctuation_from_cpf as format_cpf
+from cpf_validator import CPFValidator
 from users import find_user_in_database
 
 def register_account(user_arr: list[dict[str, Any]],
@@ -28,15 +28,15 @@ def register_account(user_arr: list[dict[str, Any]],
     """
 
     while True:
-        account_owner_cpf = input("Insira o CPF do dono da conta a ser criada: ")
+        acc_owner_cpf = input("Insira o CPF do dono da conta a ser criada: ")
 
-        is_valid = verify_cpf(account_owner_cpf)
+        is_valid = CPFValidator.main(acc_owner_cpf)
 
         if is_valid:
-            account_owner_cpf = format_cpf(account_owner_cpf)
+            acc_owner_cpf = CPFValidator.remove_punctuation_from_cpf(acc_owner_cpf)
 
         find_user_in_user_db = [user for user in user_arr
-                                if user.get('cpf', None) == account_owner_cpf]
+                                if user.get('cpf', None) == acc_owner_cpf]
 
         if len(find_user_in_user_db) == 0:
             # if a list is returned, then, user exists:
@@ -45,13 +45,13 @@ def register_account(user_arr: list[dict[str, Any]],
         account:dict[str, str|int] = {
             "id": 1 if acc_arr == [] else len(acc_arr) + 1,
             "agency": agency_number,
-            "user": account_owner_cpf
+            "user": acc_owner_cpf
         }
 
         acc_arr.append(account)
 
         print(f"Conta de ID {account.get('id', None)} foi criada para "
-            f"o usuário de CPF {account_owner_cpf}")
+            f"o usuário de CPF {acc_owner_cpf}")
 
         return acc_arr
 
