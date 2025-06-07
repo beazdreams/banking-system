@@ -47,3 +47,50 @@ For the first version of the system, we will work with only one user and must im
 - The system must display the user's current balance right after the statement, always formatted with two decimal places and preceded by "R$".
 
 [Original description, given in the bootcamp](https://academiapme-my.sharepoint.com/:p:/g/personal/kawan_dio_me/Ef-dMEJYq9BPotZQso7LUCwBJd7gDqCC2SYlUYx0ayrGNQ?rtime=MDLUO0B13Ug).
+
+## Challenge #2:
+
+<details>
+    <summary>Portuguese description</summary>
+    <p>Devem ser implementadas novas funcionalidades:</p>
+    <h3>Cadastrar conta corrente</h3>
+    <ul>
+        <li>O programa deve armazenar contas em uma lista;</li>
+        <li>Uma conta é composta por agência, número da conta e usuário;</li>
+        <li>O número da conta é sequencial, iniciando em 1;</li>
+        <li>O número da agência é fixo: "0001";</li>
+        <li>Um usuário pode ter mais de uma conta, mas uma conta pertence a apenas um usuário.</li>
+    </ul>
+    <h3>Criar usuário (cliente)</h3>
+    <ul>
+        <li>O programa deve armazenar usuários em uma lista;</li>
+        <li>Um usuário é composto por nome, data de nascimento, CPF e endereço;</li>
+        <li>O endereço é uma <code>string</code> com o formato: logradouro - nº - bairro - cidade/UF;</li>
+        <li>Deve ser armazenado somente os números do CPF;</li>
+        <li>Não podemos cadastrar 2 usuários com o mesmo CPF.</li>
+    </ul>
+</details>
+<br>
+
+New features should be implemented for this new challenge:
+
+### Register banking account
+
+- The software must keep all registered accounts in a list;
+- An account contains:
+    - an agency;
+    - the account's number ID, and;
+    - the user's name.
+- The account's number is sequential, starting with 1;
+- The agency number is defaulted to "0001";
+- An user can have multiple accounts, but an account belongs to only one user.
+
+### Register users (clients)
+
+- The software must keep all registered users in a list;
+- An user contains:
+    - a name;
+    - a birth date (dd/mm/yyyy);
+    - the full address, formatted as: address - house number - neighbourhood - city/State UF;
+- Only the CPF numbers must be kept;
+- The database should not contain two users with the same CPF.
