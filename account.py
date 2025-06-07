@@ -74,9 +74,9 @@ def print_account_list(acc_database: list, user_database: list):
                 raise ValueError("Usuário não existe na base de dados!")
 
             formatted_acc_database.append(
-                f'Identificador único: {account.get("id", "ID desconhecido")}, '
-                f'Agência: {account.get("agency", "Agência desconhecida")}, '
-                f'Nome do usuário: {user_name}'
+                f'Identificador único:\t{account.get("id", "ID desconhecido")}\n'
+                f'Agência:\t{account.get("agency", "Agência desconhecida")}\n'
+                f'Nome do usuário:\t{user_name}'
             )
 
         print('\n'.join(formatted_acc_database))

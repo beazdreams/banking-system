@@ -14,14 +14,14 @@ from account import register_account, print_account_list
 
 MENU = """
 
-[d] Depositar
-[s] Sacar
-[c] Cadastrar conta corrente
-[u] Cadastrar usuário
-[x] Extrato
-[lu] Listar usuários cadastrados
-[lc] Listar contas corrente
-[e] Sair
+[d]\tDepositar
+[s]\tSacar
+[c]\tCadastrar conta corrente
+[u]\tCadastrar usuário
+[x]\tExtrato
+[lu]\tListar usuários cadastrados
+[lc]\tListar contas corrente
+[e]c\tSair
 
 => """
 

@@ -162,9 +162,9 @@ def print_statement(statement: list):
 
     if len(statement) > 0:
         formatted_statement = [
-            f'Operação: {prettify_names.get(ext.get("operation_type", {}), "N/A")}, '
-            f'Valor da operação: R$ {ext.get("value", 0):.2f}, '
-            f'Saldo após a operação: R$ {ext.get("saldo_after_operation", 0):.2f}'
+            f'Operação: {prettify_names.get(ext.get("operation_type", {}), "N/A")}\n'
+            f'Valor da operação:\tR$ {ext.get("value", 0):.2f}\n'
+            f'Saldo após a operação:\tR$ {ext.get("saldo_after_operation", 0):.2f}'
             for ext in statement
         ]
         print('\n'.join(formatted_statement))

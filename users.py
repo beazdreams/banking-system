@@ -138,9 +138,9 @@ def print_user_list(user_database: list):
 
     if len(user_database) > 0:
         formatted_user_database = [
-            f'Nome: {ext.get("name", "Sem nome")}, '
-            f'CPF: {ext.get("cpf", "Sem CPF")}, '
-            f'Endereço: {ext.get("full_address", "Sem endereço")}'
+            f'Nome:\t{ext.get("name", "Sem nome")}\n'
+            f'CPF:\t{ext.get("cpf", "Sem CPF")}\n'
+            f'Endereço:\t{ext.get("full_address", "Sem endereço")}'
             for ext in user_database
         ]
         print('\n'.join(formatted_user_database))
