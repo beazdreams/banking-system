@@ -11,7 +11,7 @@ An account contains:
 """
 
 from typing import Any
-from cpf_validator import main as verify_cpf
+from cpf_validator import main as verify_cpf, remove_punctuation_from_cpf as format_cpf
 
 def register_account(user_arr: list[dict[str, Any]],
                      acc_arr: list[dict[str, Any]],
@@ -32,7 +32,7 @@ def register_account(user_arr: list[dict[str, Any]],
         is_valid = verify_cpf(account_owner_cpf)
 
         if is_valid:
-            print(account_owner_cpf)
+            account_owner_cpf = format_cpf(account_owner_cpf)
 
         find_user_in_user_db = [user for user in user_arr
                                 if user.get('cpf', None) == account_owner_cpf]

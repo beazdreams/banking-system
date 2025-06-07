@@ -6,7 +6,7 @@ This module contains the methods related to user CRUD
 """
 
 import datetime
-from cpf_validator import main as verify_cpf
+from cpf_validator import main as verify_cpf, remove_punctuation_from_cpf as format_cpf
 
 def validate_uf(user_uf: str) -> bool:
     """
@@ -83,6 +83,7 @@ def main(user_arr: list):
             is_valid = verify_cpf(user_cpf)
 
             if is_valid:
+                user_cpf = format_cpf(user_cpf)
                 find_user = [user for user in user_arr if user.get('cpf', None) == user_cpf]
 
                 if len(find_user) > 0:

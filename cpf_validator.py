@@ -8,13 +8,20 @@ be used to register an user and/or bank account.
 
 import re
 
+def remove_punctuation_from_cpf(user_cpf: str) -> str:
+    """
+    Removes special characters from the CPF, leaving only
+    the numbers.
+    """
+    return user_cpf.replace('.', '').replace('-', '')
+
 def main(user_cpf: str) -> bool:
     """
     Allows the user to input their CPF and validates it to ensure
     data quality.
     """
     if re.match(r'\d{3}.\d{3}.\d{3}-\d{2}', user_cpf):
-        user_cpf = user_cpf.replace('.', '').replace('-', '')
+        user_cpf = remove_punctuation_from_cpf(user_cpf)
         is_digit = user_cpf.isdigit()
         is_eleven_digits_long = len(user_cpf) == 11
 
