@@ -71,3 +71,26 @@ For the first version of the system, we will work with only one user and must im
     </ul>
 </details>
 <br>
+
+New features should be implemented for this new challenge:
+
+### Register banking account
+
+- The software must keep all registered accounts in a list;
+- An account contains:
+    - an agency;
+    - the account's number ID, and;
+    - the user's name.
+- The account's number is sequential, starting with 1;
+- The agency number is defaulted to "0001";
+- An user can have multiple accounts, but an account belongs to only one user.
+
+### Register users (clients)
+
+- The software must keep all registered users in a list;
+- An user contains:
+    - a name;
+    - a birth date (dd/mm/yyyy);
+    - the full address, formatted as: address - house number - neighbourhood - city/State UF;
+- Only the CPF numbers must be kept;
+- The database should not contain two users with the same CPF.
