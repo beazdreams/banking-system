@@ -12,6 +12,7 @@ An account contains:
 
 from typing import Any
 from cpf_validator import main as verify_cpf, remove_punctuation_from_cpf as format_cpf
+from users import find_user_in_database
 
 def register_account(user_arr: list[dict[str, Any]],
                      acc_arr: list[dict[str, Any]],
@@ -53,3 +54,31 @@ def register_account(user_arr: list[dict[str, Any]],
             f"o usuário de CPF {account_owner_cpf}")
 
         return acc_arr
+
+def print_account_list(acc_database: list, user_database: list):
+    """
+    Prints all account's data on the terminal with adequate formatting
+    """
+
+    formatted_acc_database = []
+
+    if len(acc_database) > 0:
+        for account in acc_database:
+            user_cpf = account.get("user", "Usuário desconhecido")
+
+            user_data = find_user_in_database(user_database, user_cpf)
+
+            if len(user_data) > 0:
+                user_name = user_data[0].get("name", "Usuário desconhecido")
+            else:
+                raise ValueError("Usuário não existe na base de dados!")
+
+            formatted_acc_database.append(
+                f'Identificador único: {account.get("id", "ID desconhecido")}, '
+                f'Agência: {account.get("agency", "Agência desconhecida")}, '
+                f'Nome do usuário: {user_name}'
+            )
+
+        print('\n'.join(formatted_acc_database))
+    else:
+        print('Nenhuma conta registrada até o momento')
