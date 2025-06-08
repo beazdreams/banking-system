@@ -42,16 +42,18 @@ def register_account(user_arr: list[User],
             # if a list is returned, then, user exists:
             raise ValueError('um usuário com este CPF não existe na base de dados.')
 
-        account:dict[str, str|int] = {
+        acc_owner = find_user_in_user_db[0]
+
+        account:dict[str, str|int|User] = {
             "id": 1 if acc_arr == [] else len(acc_arr) + 1,
             "agency": agency_number,
-            "user": acc_owner_cpf
+            "user": acc_owner
         }
 
         acc_arr.append(account)
 
         print(f"Conta de ID {account.get('id', None)} foi criada para "
-            f"o usuário de CPF {acc_owner_cpf}")
+            f"o usuário {acc_owner.name}")
 
         return acc_arr
 
@@ -66,7 +68,7 @@ def print_account_list(acc_database: list, user_database: list):
         for account in acc_database:
             user_cpf = account.get("user", "Usuário desconhecido")
 
-            user_data = User.find_user_in_database(user_database, user_cpf)
+            user_data = User.find_user_in_database(user_database, user_cpf.cpf)
 
             if len(user_data) > 0:
                 user_name = user_data[0].name
