@@ -12,9 +12,9 @@ An account contains:
 
 from typing import Any
 from cpf_validator import CPFValidator
-from users import find_user_in_database
+from users import User
 
-def register_account(user_arr: list[dict[str, Any]],
+def register_account(user_arr: list[User],
                      acc_arr: list[dict[str, Any]],
                      agency_number: str="0001") -> list[dict[str, Any]]:
     """
@@ -36,7 +36,7 @@ def register_account(user_arr: list[dict[str, Any]],
             acc_owner_cpf = CPFValidator.remove_punctuation_from_cpf(acc_owner_cpf)
 
         find_user_in_user_db = [user for user in user_arr
-                                if user.get('cpf', None) == acc_owner_cpf]
+                                if user.cpf == acc_owner_cpf]
 
         if len(find_user_in_user_db) == 0:
             # if a list is returned, then, user exists:
@@ -66,10 +66,10 @@ def print_account_list(acc_database: list, user_database: list):
         for account in acc_database:
             user_cpf = account.get("user", "Usuário desconhecido")
 
-            user_data = find_user_in_database(user_database, user_cpf)
+            user_data = User.find_user_in_database(user_database, user_cpf)
 
             if len(user_data) > 0:
-                user_name = user_data[0].get("name", "Usuário desconhecido")
+                user_name = user_data[0].name
             else:
                 raise ValueError("Usuário não existe na base de dados!")
 
