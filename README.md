@@ -94,3 +94,72 @@ New features should be implemented for this new challenge:
     - the full address, formatted as: address - house number - neighbourhood - city/State UF;
 - Only the CPF numbers must be kept;
 - The database should not contain two users with the same CPF.
+
+## Challenge #3:
+
+<details>
+    <summary>Portuguese description</summary>
+    <p>Atualizar a implementação do sistema bancário, armazenando os dados de clientes e contas bancárias em objetos em vez de dicionários.</p>
+    <p>O código deve seguir o modelo de classes UML a seguir:</p>
+    <img alt="Imagem provida no desafio do Bootcamp, com o diagrama de classes referência." src="img/challenge_class_diagram.png"/>
+</details>
+
+Transform to a Object Oriented Programming paradigm. The provided diagram reference is:
+
+```mermaid
+classDiagram
+direction TB
+    class Transaction {
+        + register(account: Account)
+    }
+
+    class Deposit {
+        - value: float
+    }
+
+    class Withdrawal {
+        - value: float
+    }
+
+    class User {
+        - address: str
+        - accounts: list
+        + do_transaction(account: Account, transaction: Transaction)
+        + add_account(accont: Account)
+    }
+
+    class NaturalPerson {
+        - cpf: str
+        - name: str
+        - birth_date: date
+    }
+
+    class Account {
+        - value: float
+        - number_id: int
+        - agency: str
+        - owner: User
+        - history: History
+        + value() float
+        + new_account(owner: User, number_id: int)
+        + withdraw(value: float) bool
+        + deposit(value: float) bool
+    }
+
+    class CurrentAccount {
+        - limit: float
+        - limit_withdraws: int
+    }
+
+    Account <|-- CurrentAccount
+    Account *-- User
+    Account *-- History
+    Transaction <|-- Deposit
+    Transaction <|-- Withdrawal
+    User <-- Transaction
+    User <|-- NaturalPerson
+```
+
+> The final diagram is different from the reference one
+
+TBA
