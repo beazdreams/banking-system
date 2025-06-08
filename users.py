@@ -12,10 +12,9 @@ class User:
     """
     Defines and instantiates a User
     """
-    def __init__(self, cpf: str, name: str="Unknown",
-                 birth_date: datetime.date=datetime.date(1000, 1, 1),
-                 address: str='', house_number: str='', neighbourhood: str='',
-                 city: str='', uf: str='') -> None:
+    def __init__(self, cpf: str, name: str, birth_date: datetime.date,
+                 address: str, house_number: str, neighbourhood: str,
+                 city: str, uf: str) -> None:
         self._cpf = cpf
         self._name = name
         self._birth_date = birth_date
