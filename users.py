@@ -7,6 +7,7 @@ This module contains the methods related to user CRUD
 
 import datetime
 from cpf_validator import CPFValidator
+from account import Account
 
 class User:
     """
@@ -23,6 +24,7 @@ class User:
         self._neighbourhood = neighbourhood # bairro de residência
         self._city = city # cidade de residência
         self._uf = uf # UF do Estado
+        self._accounts:list[Account] = []
 
     @property
     def cpf(self):
