@@ -16,25 +16,36 @@ class User:
                  birth_date: datetime.date=datetime.date(1000, 1, 1),
                  address: str='', house_number: str='', neighbourhood: str='',
                  city: str='', uf: str='') -> None:
-        self.cpf = cpf
-        self.name = name
-        self.birth_date = birth_date
-        self.address = address # logradouro
-        self.house_number = house_number # número da casa
-        self.neighbourhood = neighbourhood # bairro de residência
-        self.city = city # cidade de residência
-        self.uf = uf # UF do Estado
+        self._cpf = cpf
+        self._name = name
+        self._birth_date = birth_date
+        self._address = address # logradouro
+        self._house_number = house_number # número da casa
+        self._neighbourhood = neighbourhood # bairro de residência
+        self._city = city # cidade de residência
+        self._uf = uf # UF do Estado
+
+    @property
+    def cpf(self):
+        """Returns `self._cpf`"""
+        return self._cpf
+
+    @property
+    def name(self):
+        """Returns `self._name`"""
+        return self._name
 
     @property
     def full_address(self):
         """
         Formats the address according to the business rules.
         """
-        return (f'{self.address} - {self.house_number}'
-                f' - {self.neighbourhood} - '
-                f'{self.city}/{self.uf}')
+        return (f'{self._address} - {self._house_number}'
+                f' - {self._neighbourhood} - '
+                f'{self._city}/{self._uf}')
 
-    def _validate_uf(self, user_uf: str) -> bool:
+    @classmethod
+    def _validate_uf(cls, user_uf: str) -> bool:
         """
         Checks if the UF input is valid and returns `True` if yes, `False` if no.
 
@@ -51,7 +62,8 @@ class User:
             return True
         return False
 
-    def _register_birth_date(self) -> datetime.date:
+    @classmethod
+    def _register_birth_date(cls) -> datetime.date:
         """
         Registers the user's birth date, using a `while` loop to ensure that the
         user can't break if the date is invalid.
@@ -65,7 +77,8 @@ class User:
             except ValueError as e:
                 print(f'ValueError: a data inserida é inválida!\n{e}')
 
-    def _register_state_uf(self) -> str:
+    @classmethod
+    def _register_state_uf(cls) -> str:
         """
         Registers the user's state UF, using a `while` loop to ensure that the
         user can't break if the value is invalid.
@@ -73,7 +86,7 @@ class User:
         while True:
             try:
                 user_uf = input('Informe o Estado de residência (UF, apenas dois caracteres): ')
-                uf_is_valid = self._validate_uf(user_uf)
+                uf_is_valid = cls._validate_uf(user_uf)
                 if len(user_uf) != 2:
                     raise ValueError('UF deve conter dois caracteres')
                 if not uf_is_valid:
@@ -125,18 +138,20 @@ class User:
                         # if a list is returned, then, user exists:
                         raise ValueError('um usuário com este CPF já existe na base de dados.')
 
-                    user = User(cpf=user_cpf)
-                    user.name = input("Informe o nome completo: ")
+                    user_name = input("Informe o nome completo: ")
 
-                    user.birth_date = user._register_birth_date()
+                    user_birth_date = User._register_birth_date()
 
-                    user.address = input("informe o logradouro de residência: ")
-                    user.house_number = input("Informe o número da casa: ")
-                    user.neighbourhood = input("Informe o bairro de residência: ")
-                    user.city = input("Informe a cidade de residência: ")
+                    user_address = input("informe o logradouro de residência: ")
+                    user_house_number = input("Informe o número da casa: ")
+                    user_neighbourhood = input("Informe o bairro de residência: ")
+                    user_city = input("Informe a cidade de residência: ")
 
-                    user.uf = user._register_state_uf()
+                    user_uf = User._register_state_uf()
 
+                    user = User(cpf=user_cpf, name=user_name, birth_date=user_birth_date,
+                                address=user_address, house_number=user_house_number,
+                                neighbourhood=user_neighbourhood, city=user_city, uf=user_uf)
                     user_arr.append(user)
 
                     print("Usuário cadastrado com sucesso!")
