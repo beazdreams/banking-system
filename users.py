@@ -45,6 +45,23 @@ class User:
                 f' - {self._neighbourhood} - '
                 f'{self._city}/{self._uf}')
 
+    def print_account_list(self):
+        """
+        Prints all account's data on the terminal with adequate formatting.
+
+        Uses a `Account` print method to print account data for each account
+        in the `_accounts` User list.
+        """
+
+        print(f'Imprimindo informações da(s) conta(s) de {self._name}')
+
+        if len(self._accounts) >= 1:
+            for account in self._accounts:
+                account.print_account_data()
+                print('\n')
+        else:
+            print('Nenhuma conta registrada até o momento')
+
     @classmethod
     def _validate_uf(cls, user_uf: str) -> bool:
         """
