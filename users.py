@@ -161,19 +161,13 @@ class User:
             except Exception as e:
                 print(e)
 
-    @classmethod
-    def print_user_list(cls, user_database: list):
+    def print_user_info(self):
         """
         Prints the user's data on the terminal with adequate formatting
         """
 
-        if len(user_database) > 0:
-            formatted_user_database = [
-                f'Nome:\t{ext.name}\n'
-                f'CPF:\t{ext.cpf}\n'
-                f'Endereço:\t{ext.full_address}'
-                for ext in user_database
-            ]
-            print('\n'.join(formatted_user_database))
-        else:
-            print('Nenhum usuário cadastrado até o momento')
+        print(
+            f'Nome:\t{self._name}\n'
+            f'CPF:\t{self._cpf}\n'
+            f'Endereço:\t{self.full_address}'
+        )
