@@ -61,16 +61,6 @@ class User:
         else:
             print('Nenhuma conta registrada até o momento')
 
-    @classmethod
-    def find_user_in_database(cls, user_arr: list, user_cpf: str):
-        """'
-        Finds the user's data in the user list database
-        """
-
-        found_user = [user for user in user_arr if user.cpf == user_cpf]
-
-        return found_user if found_user else []
-
     def print_user_info(self):
         """
         Prints the user's data on the terminal with adequate formatting
