@@ -6,7 +6,6 @@ This module contains the methods related to user CRUD
 """
 
 import datetime
-from typing import Self
 from account import Account
 
 class User:
@@ -63,6 +62,30 @@ class User:
             print('Nenhuma conta registrada até o momento')
 
     @classmethod
+    def find_user_in_database(cls, user_arr: list, user_cpf: str):
+        """'
+        Finds the user's data in the user list database
+        """
+
+        found_user = [user for user in user_arr if user.cpf == user_cpf]
+
+        return found_user if found_user else []
+
+    def print_user_info(self):
+        """
+        Prints the user's data on the terminal with adequate formatting
+        """
+
+        print(
+            f'Nome:\t{self._name}\n'
+            f'CPF:\t{self._cpf}\n'
+            f'Endereço:\t{self.full_address}'
+        )
+
+class UserFactory:
+    """Factory class for creating users"""
+
+    @classmethod
     def _validate_uf(cls, user_uf: str) -> bool:
         """
         Checks if the UF input is valid and returns `True` if yes, `False` if no.
@@ -114,18 +137,8 @@ class User:
             except ValueError as e:
                 print(f'ValueError: {e}')
 
-    @classmethod
-    def find_user_in_database(cls, user_arr: list, user_cpf: str):
-        """'
-        Finds the user's data in the user list database
-        """
-
-        found_user = [user for user in user_arr if user.cpf == user_cpf]
-
-        return found_user if found_user else []
-
-    @classmethod
-    def main(cls, user_cpf: str) -> Self:
+    @staticmethod
+    def create_user(user_cpf: str) -> User:
         """
         When triggered, starts the process of banking user creation, asking the user
         information such as CPF, full name, birth date and address.
@@ -147,16 +160,16 @@ class User:
             try:
                 user_name = input("Informe o nome completo: ")
 
-                user_birth_date = User._register_birth_date()
+                user_birth_date = UserFactory._register_birth_date()
 
                 user_address = input("informe o logradouro de residência: ")
                 user_house_number = input("Informe o número da casa: ")
                 user_neighbourhood = input("Informe o bairro de residência: ")
                 user_city = input("Informe a cidade de residência: ")
 
-                user_uf = User._register_state_uf()
+                user_uf = UserFactory._register_state_uf()
 
-                return cls(cpf=user_cpf, name=user_name, birth_date=user_birth_date,
+                return User(cpf=user_cpf, name=user_name, birth_date=user_birth_date,
                            address=user_address, house_number=user_house_number,
                            neighbourhood=user_neighbourhood, city=user_city, uf=user_uf)
 
@@ -168,14 +181,3 @@ class User:
 
             except NameError as e:
                 print(f'NameError: {e}')
-
-    def print_user_info(self):
-        """
-        Prints the user's data on the terminal with adequate formatting
-        """
-
-        print(
-            f'Nome:\t{self._name}\n'
-            f'CPF:\t{self._cpf}\n'
-            f'Endereço:\t{self.full_address}'
-        )
