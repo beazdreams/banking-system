@@ -6,7 +6,7 @@ This module contains the methods related to user CRUD
 """
 
 import datetime
-from cpf_validator import CPFValidator
+from typing import Self
 from account import Account
 
 class User:
@@ -125,7 +125,7 @@ class User:
         return found_user if found_user else []
 
     @classmethod
-    def main(cls, user_arr: list):
+    def main(cls, user_cpf: str) -> Self:
         """
         When triggered, starts the process of banking user creation, asking the user
         information such as CPF, full name, birth date and address.
@@ -145,38 +145,29 @@ class User:
 
         while True:
             try:
-                user_cpf = input("Insira o CPF do usuário que deseja cadastrar: ")
-                is_valid = CPFValidator.main(user_cpf)
+                user_name = input("Informe o nome completo: ")
 
-                if is_valid:
-                    user_cpf = CPFValidator.remove_punctuation_from_cpf(user_cpf)
-                    find_user = User.find_user_in_database(user_arr, user_cpf)
+                user_birth_date = User._register_birth_date()
 
-                    if len(find_user) > 0:
-                        # if a list is returned, then, user exists:
-                        raise ValueError('um usuário com este CPF já existe na base de dados.')
+                user_address = input("informe o logradouro de residência: ")
+                user_house_number = input("Informe o número da casa: ")
+                user_neighbourhood = input("Informe o bairro de residência: ")
+                user_city = input("Informe a cidade de residência: ")
 
-                    user_name = input("Informe o nome completo: ")
+                user_uf = User._register_state_uf()
 
-                    user_birth_date = User._register_birth_date()
+                return cls(cpf=user_cpf, name=user_name, birth_date=user_birth_date,
+                           address=user_address, house_number=user_house_number,
+                           neighbourhood=user_neighbourhood, city=user_city, uf=user_uf)
 
-                    user_address = input("informe o logradouro de residência: ")
-                    user_house_number = input("Informe o número da casa: ")
-                    user_neighbourhood = input("Informe o bairro de residência: ")
-                    user_city = input("Informe a cidade de residência: ")
+            except ValueError as e:
+                print(f'ValueError: {e}')
 
-                    user_uf = User._register_state_uf()
+            except TypeError as e:
+                print(f'TypeError: {e}')
 
-                    user = User(cpf=user_cpf, name=user_name, birth_date=user_birth_date,
-                                address=user_address, house_number=user_house_number,
-                                neighbourhood=user_neighbourhood, city=user_city, uf=user_uf)
-                    user_arr.append(user)
-
-                    print("Usuário cadastrado com sucesso!")
-                    return user_arr
-
-            except Exception as e:
-                print(e)
+            except NameError as e:
+                print(f'NameError: {e}')
 
     def print_user_info(self):
         """
