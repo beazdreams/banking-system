@@ -4,7 +4,7 @@ This module contains banking methods.
 
 from cpf_validator import CPFValidator
 from users import User, UserFactory
-from account import Account
+from account import Account, AccountFactory
 
 class Bank:
     """Singleton representing the Bank"""
@@ -87,6 +87,49 @@ class Bank:
             except NameError as e:
                 print(f'NameError: {e}')
 
+    def create_account(self):
+        """
+        When triggered, starts the process of banking account creation, asking the `User`'s CPF
+        to be able to find it in the database and to add the new `Account` to the `User`'s list.
+
+        If the CPF is not in the database, the user can follow the registration flow.
+        The function validates the date and UF input to ensure no invalid values are
+        inserted to the database.
+        """
+
+        while True:
+            try:
+                user_cpf, is_valid = self._insert_cpf()
+
+                if is_valid:
+                    find_user = self.find_user_in_database(user_cpf)
+
+                    if len(find_user) == 0:
+                        # if a list is returned, then, user exists:
+                        raise ValueError('não existe um usuário com este CPF na base de dados.')
+
+                    user = find_user[0]
+
+                    acc_id_number = 1 if not self._account_list else len(self._account_list) + 1
+
+                    new_acc = AccountFactory.register_account(acc_id_number, user_cpf)
+                    self._account_list.append(new_acc)
+
+                    user.add_user_account(new_acc)
+
+                    print(f"Conta para o usuário de CPF {user.cpf} registrada com sucesso!")
+
+                    break
+
+            except ValueError as e:
+                print(f'ValueError: {e}')
+
+            except TypeError as e:
+                print(f'TypeError: {e}')
+
+            except NameError as e:
+                print(f'NameError: {e}')
+
     def main(self) -> None:
         """Allows the user to select their desired option in a menu"""
         while True:
@@ -97,6 +140,9 @@ class Bank:
                     case 'u':
                         print('Cadastrar usuário')
                         self.create_user()
+                    case 'c':
+                        print('Cadastrar conta')
+                        self.create_account()
                     case _:
                         print('Opção inválida, por favor, selecione'
                             'novamente a operação desejada')

@@ -10,8 +10,6 @@ An account contains:
 @date: 2025-06-03
 """
 
-from typing import Any
-from cpf_validator import CPFValidator
 from statement import Statement
 
 class Account:
@@ -27,50 +25,14 @@ class Account:
         self._user_id = user_id
 
     @property
+    def number_id(self):
+        """Returns `self._number_id`"""
+        return self.number_id
+
+    @property
     def statement(self):
         """Returns `self._statement`"""
         return self._statement
-
-    @classmethod
-    def register_account(cls, user_arr: list,
-                        acc_arr: list) -> list[dict[str, Any]]:
-        """
-        Using a `while` loop, it allows the user to insert a CPF, and, if it's valid,
-        verifies if it's on the user database. If not, refuses the account creation.
-
-        Params:
-        @user_arr: list of users registered in the bank app;
-        @acc_arr: list of accounts existing in the bank;
-        @agency_number: default agency number.
-        """
-
-        while True:
-            acc_owner_cpf = input("Insira o CPF do dono da conta a ser criada: ")
-
-            is_valid = CPFValidator.main(acc_owner_cpf)
-
-            if is_valid:
-                acc_owner_cpf = CPFValidator.remove_punctuation_from_cpf(acc_owner_cpf)
-
-            find_user_in_user_db = [user for user in user_arr
-                                    if user.cpf == acc_owner_cpf]
-
-            if len(find_user_in_user_db) == 0:
-                # if a list is returned, then, user exists:
-                raise ValueError('um usuário com este CPF não existe na base de dados.')
-
-            acc_owner = find_user_in_user_db[0]
-
-            account = Account(
-                number_id=1 if acc_arr == [] else len(acc_arr) + 1
-            )
-
-            acc_arr.append(account)
-
-            print(f"Conta de ID {account._number_id} foi criada para "
-                f"o usuário {acc_owner.name}")
-
-            return acc_arr
 
     def print_account_data(self):
         """
@@ -160,3 +122,20 @@ class Account:
 
         else:
             raise ValueError('o valor para depósito deve ser maior que zero.')
+
+class AccountFactory:
+    """Factory for `Account` objects, creating new instances of it"""
+
+    @staticmethod
+    def register_account(acc_id: int, acc_owner: str) -> Account:
+        """
+        Using a `while` loop, it allows the user to insert a CPF, and, if it's valid,
+        verifies if it's on the user database. If not, refuses the account creation.
+
+        Params:
+        @user_arr: list of users registered in the bank app;
+        @acc_arr: list of accounts existing in the bank;
+        @agency_number: default agency number.
+        """
+
+        return Account(acc_id, acc_owner)

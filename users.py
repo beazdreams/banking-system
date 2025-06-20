@@ -44,6 +44,13 @@ class User:
                 f' - {self._neighbourhood} - '
                 f'{self._city}/{self._uf}')
 
+    def add_user_account(self, account: Account) -> None:
+        """Adds an `Account` object to a user.
+        
+        Params:
+        @account: the `Account` object to be added to the user's account list"""
+        self._accounts.append(account)
+
     def print_account_list(self):
         """
         Prints all account's data on the terminal with adequate formatting.
