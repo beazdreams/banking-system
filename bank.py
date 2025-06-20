@@ -36,6 +36,10 @@ class Bank:
             return user_cpf, True
         return '', False
 
+    def _print_all_user_accounts(self):
+        for user in self._user_list:
+            user.print_account_list()
+
     def find_user_in_database(self, user_cpf: str):
         """'
         Finds the user's data in the user list database
@@ -143,6 +147,9 @@ class Bank:
                     case 'c':
                         print('Cadastrar conta')
                         self.create_account()
+                    case 'lc':
+                        print('Listar contas')
+                        self._print_all_user_accounts()
                     case _:
                         print('Opção inválida, por favor, selecione'
                             'novamente a operação desejada')
