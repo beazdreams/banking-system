@@ -26,6 +26,16 @@ class Bank:
         self._user_list: list[User] = []
         self._account_list: list[Account] = []
 
+    @staticmethod
+    def _insert_cpf() -> tuple[str, bool]:
+        user_cpf = input("Insira o CPF do usuário que deseja cadastrar: ")
+        is_valid = CPFValidator.main(user_cpf)
+
+        if is_valid:
+            user_cpf = CPFValidator.remove_punctuation_from_cpf(user_cpf)
+            return user_cpf, True
+        return '', False
+
     def find_user_in_database(self, user_cpf: str):
         """'
         Finds the user's data in the user list database
@@ -52,11 +62,9 @@ class Bank:
 
         while True:
             try:
-                user_cpf = input("Insira o CPF do usuário que deseja cadastrar: ")
-                is_valid = CPFValidator.main(user_cpf)
+                user_cpf, is_valid = self._insert_cpf()
 
                 if is_valid:
-                    user_cpf = CPFValidator.remove_punctuation_from_cpf(user_cpf)
                     find_user = self.find_user_in_database(user_cpf)
 
                     if len(find_user) > 0:
