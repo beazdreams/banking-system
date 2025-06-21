@@ -5,6 +5,7 @@ This module contains banking methods.
 from cpf_validator import CPFValidator
 from users import User, UserFactory
 from account import Account, AccountFactory
+from banking_methods import Transaction
 
 class Bank:
     """Singleton representing the Bank"""
@@ -46,6 +47,15 @@ class Bank:
         """
 
         found_user = [user for user in self._user_list if user.cpf == user_cpf]
+
+        return found_user if found_user else []
+
+    def find_account_in_database(self, account_id: str):
+        """'
+        Finds the Account's data in the user list database
+        """
+
+        found_user = [acc for acc in self._account_list if acc.number_id == int(account_id)]
 
         return found_user if found_user else []
 
@@ -150,6 +160,28 @@ class Bank:
                     case 'lc':
                         print('Listar contas')
                         self._print_all_user_accounts()
+                    case 's':
+                        print('Saque')
+                        acc_number = input('Insira o número da conta: ')
+                        acc = self.find_account_in_database(account_id=acc_number)
+
+                        if acc:
+                            value = input("Insira o valor a ser sacado: ")
+                            value = Transaction._convert_str_to_float(value)
+                            acc[0].withdraw_money(value)
+                        else:
+                            print(f'Não existe uma conta com o ID {acc_number}')
+                    case 'd':
+                        print('Depósito')
+                        acc_number = input('Insira o número da conta: ')
+                        acc = self.find_account_in_database(account_id=acc_number)
+
+                        if acc:
+                            value = input("Insira o valor a ser depositado: ")
+                            value = Transaction._convert_str_to_float(value)
+                            acc[0].deposit_money(value)
+                        else:
+                            print(f'Não existe uma conta com o ID {acc_number}')
                     case _:
                         print('Opção inválida, por favor, selecione'
                             'novamente a operação desejada')
