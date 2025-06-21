@@ -21,13 +21,13 @@ class Account:
         self._number_id = number_id
         self._agency = "0001"
         self._balance = 0
-        self._statement = Statement
+        self._statement = Statement()
         self._user_id = user_id
 
     @property
     def number_id(self):
         """Returns `self._number_id`"""
-        return self.number_id
+        return self._number_id
 
     @property
     def statement(self):
@@ -71,11 +71,9 @@ class Account:
         @value: the amount of money to be deposited
         """
 
-        history = self._statement.history
-
         current_withdrawal_number = len(
-            [transaction for transaction in history
-             if transaction.__name__ == "Withdraw"]
+            [transaction for transaction in self._statement.history
+             if transaction.__class__.__name__ == "Withdraw"]
         )
 
         below_max_daily_withdrawals = current_withdrawal_number < self.LIMIT_OF_WITHDRAWALS
