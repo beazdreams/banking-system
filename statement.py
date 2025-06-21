@@ -38,32 +38,16 @@ class Statement:
         else:
             raise TypeError(f'o tipo inserido {type(transaction)} não é suportado.')
 
-
-        self._history.append(
-            {
-                'operation_type': transaction.__class__.__name__,
-                'value': transaction.value,
-                "date": transaction.date
-            }
-        )
+        self._history.append(transaction)
 
     def print_statement(self):
         """
         Prints the account's statement on the terminal with adequate formatting
         """
 
-        prettify_names = {
-            'Withdrawal': 'saque',
-            'Deposit': 'depósito'
-        }
-
         if len(self._history) > 0:
-            formatted_statement = [
-                f'Operação: {prettify_names.get(transaction.get("operation_type", {}), "N/A")}\n'
-                f'Valor da operação:\tR$ {transaction.get("value", 0):.2f}\n'
-                #f'Saldo após a operação:\tR$ {ext.get("saldo_after_operation", 0):.2f}'
-                for transaction in self._history
-            ]
-            print('\n'.join(formatted_statement))
+            for transaction in self._history:
+                transaction.print_transaction_details()
+                print('\n')
         else:
             print('Nenhuma operação feita até o momento')
