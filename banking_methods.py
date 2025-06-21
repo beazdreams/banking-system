@@ -5,168 +5,81 @@ such as withdrawing money, depositing money, and printing the statement.
 @author: Beatriz (beabea)
 @date: 2025-04-05
 """
+from abc import ABC
+from datetime import datetime
+
 LIMIT_PER_WITHDRAWAL = 500 # equivalent to 'limite por saque'
 LIMIT_OF_WITHDRAWALS = 3 # equivalent to 'limitet de saques diários'
 
-def convert_str_to_float(value: str) -> float:
+class Transaction(ABC):
     """
-    Attempts to convert a `str` user entry to a `float` number.
-
-    If the conversion fails, in case it has a comma, it tries to replace
-    the comma with a dot to comply with Python's `float` structure.
-
-    """
-    err_msg = (f'o valor "{value}" não é aceito '
-               'pelo sistema. Insira apenas números, separando '
-               'as casas decimais por vírgula ou ponto.')
-    try:
-        value = float(value)
-        return value
-
-    except ValueError:
-        #check if value has a comma:
-        if ',' in value:
-            value = value.replace(',', '.')
-        try:
-            value = float(value)
-            return value
-
-        except ValueError as ve:
-            raise TypeError(err_msg) from ve
-
-    except TypeError as te:
-        raise ValueError(err_msg) from te
-
-def withdraw_money(balance: str, current_withdrawal_number: int,
-                   value: float, statement: list) -> tuple:
-    """
-    Withdraws money from the user's account.
-
-    The function checks if the given `value` to deposit is bigger than the minimal
-    withdrawing value, if the user already exhausted their daily withdrawal limit,
-    and if the balance is bigger or equal to the `value` being withdrawed.
-
-    If all conditions are `True`, the function then subtracts the `value` from
-    the `balance`, adds 1 to the `current_withdrawal_number` and calls `add_to_statement`
-    to ensure that the operation will be registered on the account's `statement`.
-
-    Params:
-    @balance: the account's total balance
-    @current_withdrawal_number: the number of withdrawals the user made in the current day
-    @value: the amount of money to be deposited
-    @statement: the user's account statement
+    This abstract class defines the base for banking transactions
     """
 
-    below_max_daily_withdrawals = current_withdrawal_number < LIMIT_OF_WITHDRAWALS
-    value_is_500_or_more = value >= LIMIT_PER_WITHDRAWAL
-    saldo_bigger_than_value = balance >= value
+    def __init__(self, value: float):
+        self._value = value
+        self._date = datetime.now()
 
-    if below_max_daily_withdrawals and value_is_500_or_more and saldo_bigger_than_value:
-        balance -= value
-        current_withdrawal_number += 1
-        print(f'O saque de R$ {value:.2f} foi realizado com sucesso!')
-        statement = add_to_statement('withdrawal', value, balance, statement)
-        return balance, current_withdrawal_number, statement
+    @property
+    def value(self):
+        """Returns the transaction's `_value`"""
+        return self._value
 
-    if not below_max_daily_withdrawals:
-        raise ValueError('você já excedeu o número máximo de saques diários')
+    @property
+    def date(self):
+        """Returns the transaction's `_date`"""
+        return self._date
 
-    if not value_is_500_or_more:
-        raise ValueError(f'o valor mínimo para realizar o saque é R$ {LIMIT_PER_WITHDRAWAL}, '
-            'por favor, repita a operação inserindo um valor de saque maior ou igual ao limite')
+    def print_transaction_details(self) -> None:
+        """Prints all data regarding to a `Transaction` object"""
 
-    if not saldo_bigger_than_value:
-        raise ValueError('o saldo disponível na conta é insuficiente para realizar o saque.')
+        prettify_names = {
+            'Withdrawal': 'saque',
+            'Deposit': 'depósito'
+        }
 
-    return balance, current_withdrawal_number, statement
-
-def deposit_money(balance: str, value: float, statement: list) -> tuple:
-    """
-    Deposits money to the user's own account.
-
-    The function checks if the given `value` to deposit is bigger than zero.
-    If yes, adds the number to the account's `balance` and calls `add_to_statement`
-    to ensure that the operation will be registered on the account's `statement`.
-
-    Params:
-    @balance: the account's total balance
-    @value: the amount of money to be deposited
-    @statement: the user's account statement
-    """
-    above_eq_zero = value > 0
-
-    if above_eq_zero:
-        balance += value
-        print(f'O depósito de R$ {value:.2f} foi realizado com sucesso!')
-        changed_statement = add_to_statement('deposit', value, balance, statement)
-
-    else:
-        raise ValueError('o valor para depósito deve ser maior que zero.')
-
-    return balance, changed_statement
-
-def add_to_statement(operation_type: str, value: float,
-                     balance: float, statement: list) -> list:
-    """
-    Inserts the operation into the statement variable, registering
-    it for later consulting.
-    
-    Params:
-    @operation_type: must be either 'withdrawal' or 'deposit'
-    @value: the amount of money used in the operation
-    @balance: the account's total balance
-    @statement: the user's account statement
-    """
-    if isinstance(value, float):
-        pass
-    else:
-        raise TypeError("o valor deve ser float, e não", {type(value)})
-
-    if isinstance(balance, (float, int)):
-        pass
-    else:
-        raise TypeError(f"o saldo deve ser numérico, e não {type(value)}")
-
-    if isinstance(statement, list):
-        pass
-    else:
-        raise TypeError("o extrato deve ser uma lista (tipo `list`)")
-
-    if isinstance(operation_type, str):
-        pass
-    else:
-        raise TypeError(f'o tipo inserido {type(operation_type)} não é suportado.')
-
-    if operation_type in ['withdrawal', 'deposit']:
-        statement.append(
-            {
-                'operation_type': operation_type,
-                'value': value,
-                'saldo_after_operation': balance
-            }
+        print(
+            f'Operação: {prettify_names.get((self.__class__.__name__), "N/A")}\n'
+            f'Valor da operação:\tR$ {self._value:.2f}\n'
+            f'Data da operação:\t{self._date.strftime("%d-%m-%Y %H:%M:%s")}'
         )
-    else:
-        raise ValueError('o tipo de operação é inválido.')
 
-    return statement
+    @staticmethod
+    def _convert_str_to_float(value: str) -> float:
+        """
+        Attempts to convert a `str` user entry to a `float` number.
 
-def print_statement(statement: list):
+        If the conversion fails, in case it has a comma, it tries to replace
+        the comma with a dot to comply with Python's `float` structure.
+
+        """
+        err_msg = (f'o valor "{value}" não é aceito '
+                'pelo sistema. Insira apenas números, separando '
+                'as casas decimais por vírgula ou ponto.')
+        try:
+            float_value = float(value)
+            return float_value
+
+        except ValueError:
+            #check if value has a comma:
+            if ',' in value:
+                value = value.replace(',', '.')
+            try:
+                float_value = float(value)
+                return float_value
+
+            except ValueError as ve:
+                raise TypeError(err_msg) from ve
+
+        except TypeError as te:
+            raise ValueError(err_msg) from te
+
+class Withdraw(Transaction):
     """
-    Prints the account's statement on the terminal with adequate formatting
+    Withdrawing methods
     """
 
-    prettify_names = {
-        'withdrawal': 'saque',
-        'deposit': 'depósito'
-    }
-
-    if len(statement) > 0:
-        formatted_statement = [
-            f'Operação: {prettify_names.get(ext.get("operation_type", {}), "N/A")}\n'
-            f'Valor da operação:\tR$ {ext.get("value", 0):.2f}\n'
-            f'Saldo após a operação:\tR$ {ext.get("saldo_after_operation", 0):.2f}'
-            for ext in statement
-        ]
-        print('\n'.join(formatted_statement))
-    else:
-        print('Nenhuma operação feita até o momento')
+class Deposit(Transaction):
+    """
+    Depositing methods
+    """
