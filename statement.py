@@ -20,7 +20,7 @@ class Statement:
         """
         return self._history
 
-    def add_to_statement(self, transaction: Transaction):
+    def add(self, transaction: Transaction):
         """
         Inserts the operation into the statement variable, registering
         it for later consulting.
