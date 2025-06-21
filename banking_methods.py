@@ -44,36 +44,6 @@ class Transaction(ABC):
             f'Data da operação:\t{self._date.strftime("%d-%m-%Y %H:%M:%s")}'
         )
 
-    @staticmethod
-    def _convert_str_to_float(value: str) -> float:
-        """
-        Attempts to convert a `str` user entry to a `float` number.
-
-        If the conversion fails, in case it has a comma, it tries to replace
-        the comma with a dot to comply with Python's `float` structure.
-
-        """
-        err_msg = (f'o valor "{value}" não é aceito '
-                'pelo sistema. Insira apenas números, separando '
-                'as casas decimais por vírgula ou ponto.')
-        try:
-            float_value = float(value)
-            return float_value
-
-        except ValueError:
-            #check if value has a comma:
-            if ',' in value:
-                value = value.replace(',', '.')
-            try:
-                float_value = float(value)
-                return float_value
-
-            except ValueError as ve:
-                raise TypeError(err_msg) from ve
-
-        except TypeError as te:
-            raise ValueError(err_msg) from te
-
 class Withdraw(Transaction):
     """
     Withdrawing methods

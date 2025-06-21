@@ -5,7 +5,6 @@ This module contains banking methods.
 from cpf_validator import CPFValidator
 from users import User, UserFactory
 from account import Account, AccountFactory
-from banking_methods import Transaction
 
 class Bank:
     """Singleton representing the Bank"""
@@ -144,6 +143,36 @@ class Bank:
             except NameError as e:
                 print(f'NameError: {e}')
 
+    @staticmethod
+    def _convert_str_to_float(value: str) -> float:
+        """
+        Attempts to convert a `str` user entry to a `float` number.
+
+        If the conversion fails, in case it has a comma, it tries to replace
+        the comma with a dot to comply with Python's `float` structure.
+
+        """
+        err_msg = (f'o valor "{value}" não é aceito '
+                'pelo sistema. Insira apenas números, separando '
+                'as casas decimais por vírgula ou ponto.')
+        try:
+            float_value = float(value)
+            return float_value
+
+        except ValueError:
+            #check if value has a comma:
+            if ',' in value:
+                value = value.replace(',', '.')
+            try:
+                float_value = float(value)
+                return float_value
+
+            except ValueError as ve:
+                raise TypeError(err_msg) from ve
+
+        except TypeError as te:
+            raise ValueError(err_msg) from te
+
     def main(self) -> None:
         """Allows the user to select their desired option in a menu"""
         while True:
@@ -167,7 +196,7 @@ class Bank:
 
                         if acc:
                             value = input("Insira o valor a ser sacado: ")
-                            value = Transaction._convert_str_to_float(value)
+                            value = Bank._convert_str_to_float(value)
                             acc[0].withdraw_money(value)
                         else:
                             print(f'Não existe uma conta com o ID {acc_number}')
@@ -178,7 +207,7 @@ class Bank:
 
                         if acc:
                             value = input("Insira o valor a ser depositado: ")
-                            value = Transaction._convert_str_to_float(value)
+                            value = Bank._convert_str_to_float(value)
                             acc[0].deposit_money(value)
                         else:
                             print(f'Não existe uma conta com o ID {acc_number}')
