@@ -11,6 +11,7 @@ An account contains:
 """
 
 from statement import Statement
+from banking_methods import Withdraw, Deposit
 
 class Account:
     """User's banking account"""
@@ -83,6 +84,7 @@ class Account:
         if below_max_daily_withdrawals and value_is_500_or_more and saldo_bigger_than_value:
             self._balance -= value
             current_withdrawal_number += 1
+            self._statement.add(transaction=Withdraw(value))
             print(f'O saque de R$ {value:.2f} foi realizado com sucesso!')
             #self._statement.add_to_statement('withdrawal', value, balance, statement)
             #return balance, current_withdrawal_number, statement
@@ -116,6 +118,7 @@ class Account:
 
         if above_eq_zero:
             self._balance += value
+            self._statement.add(transaction=Deposit(value))
             print(f'O depósito de R$ {value:.2f} foi realizado com sucesso!')
 
         else:
