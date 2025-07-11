@@ -40,6 +40,11 @@ class Bank:
         for user in self._user_list:
             user.print_account_list()
 
+    def _print_all_users(self):
+        """Prints all `User` data in `self._user_list"""
+        for user in self._user_list:
+            user.print_user_info()
+
     def find_user_in_database(self, user_cpf: str):
         """'
         Finds the user's data in the user list database
@@ -183,6 +188,9 @@ class Bank:
                     case 'u':
                         print('Cadastrar usuário')
                         self.create_user()
+                    case 'lu':
+                        print('Listar usuários')
+                        self._print_all_users()
                     case 'c':
                         print('Cadastrar conta')
                         self.create_account()
