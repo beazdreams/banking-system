@@ -219,6 +219,15 @@ class Bank:
                             acc[0].deposit_money(value)
                         else:
                             print(f'Não existe uma conta com o ID {acc_number}')
+                    case 'x':
+                        print('Extrato')
+                        acc_number = input('Insira o número da conta: ')
+                        acc = self.find_account_in_database(account_id=acc_number)
+
+                        if acc:
+                            acc[0].statement.print_statement()
+                        else:
+                            print(f'Não existe uma conta com o ID {acc_number}')
                     case _:
                         print('Opção inválida, por favor, selecione'
                             'novamente a operação desejada')
