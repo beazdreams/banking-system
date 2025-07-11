@@ -41,7 +41,7 @@ class Transaction(ABC):
         print(
             f'Operação: {prettify_names.get((self.__class__.__name__), "N/A")}\n'
             f'Valor da operação:\tR$ {self._value:.2f}\n'
-            f'Data da operação:\t{self._date.strftime("%d-%m-%Y %H:%M:%s")}'
+            f'Data da operação:\t{self._date.strftime("%d-%m-%Y %H:%M:%S")}'
         )
 
 class Withdraw(Transaction):
